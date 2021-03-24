@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,35 +21,44 @@ import lacerda.luhan.hrworker.repositories.WorkerRepository;
 @RequestMapping(value = "/workers")
 public class WorkerResource {
 
-	private static Logger logger = LoggerFactory.getLogger(WorkerResource.class);
+    private static Logger logger = LoggerFactory.getLogger(WorkerResource.class);
 
-	@Autowired
-	private Environment env;
+    @Value("${test.config}")
+    private String testConfig;
 
-	@Autowired
-	private WorkerRepository repository;
+    @Autowired
+    private Environment env;
 
-	@GetMapping
-	public ResponseEntity<?> findAll() {
-		List<Worker> list = repository.findAll();
-		if (!list.isEmpty())
-			return ResponseEntity.ok(list);
-		else
-			return ResponseEntity.notFound().build();
-	}
+    @Autowired
+    private WorkerRepository repository;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+    @GetMapping(value = "/configs")
+    public ResponseEntity<?> getConfigs() {
+        logger.info("CONFIG = " + testConfig);
+        return ResponseEntity.noContent().build();
+    }
 
-		logger.info("PORT = " + env.getProperty("local.server.port"));
+    @GetMapping
+    public ResponseEntity<?> findAll() {
+        List<Worker> list = repository.findAll();
+        if (!list.isEmpty())
+            return ResponseEntity.ok(list);
+        else
+            return ResponseEntity.notFound().build();
+    }
 
-		Optional<Worker> worker = repository.findById(id);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
 
-		if (worker.isPresent())
-			return ResponseEntity.ok(worker.get());
-		else
-			return ResponseEntity.notFound().build();
+        logger.info("PORT = " + env.getProperty("local.server.port"));
 
-	}
+        Optional<Worker> worker = repository.findById(id);
+
+        if (worker.isPresent())
+            return ResponseEntity.ok(worker.get());
+        else
+            return ResponseEntity.notFound().build();
+
+    }
 
 }
