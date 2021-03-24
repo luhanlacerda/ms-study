@@ -45,7 +45,7 @@ public class WorkerResource {
 		Optional<Worker> worker = repository.findById(id);
 
 		if (worker.isPresent())
-			return ResponseEntity.ok(worker);
+			return ResponseEntity.ok(worker.get());
 		else
 			return ResponseEntity.notFound().build();
 

@@ -1,5 +1,6 @@
 package lacerda.luhan.hrpayroll.resources;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lacerda.luhan.hrpayroll.entities.Payment;
 import lacerda.luhan.hrpayroll.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class PaymentResource {
     @Autowired
     private PaymentService service;
 
+    @HystrixCommand(fallbackMethod = "getPaymentAlternative")
     @GetMapping(value = "/{workerId}/days/{days}")
     public ResponseEntity<?> getPayment(@PathVariable Long workerId, @PathVariable Integer days) {
         Payment payment = service.getPayment(workerId, days);
@@ -25,5 +27,13 @@ public class PaymentResource {
         else
             return ResponseEntity.notFound().build();
     }
+
+
+    // método alternativo para caso de algum erro no método principal
+    public ResponseEntity<?> getPaymentAlternative(Long workerId, Integer days) {
+        Payment payment = new Payment("Brann", 400.0, days);
+        return ResponseEntity.ok(payment);
+    }
+
 
 }
