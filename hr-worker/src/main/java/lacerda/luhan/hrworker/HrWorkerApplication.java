@@ -1,5 +1,7 @@
 package lacerda.luhan.hrworker;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -8,8 +10,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 public class HrWorkerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HrWorkerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HrWorkerApplication.class, args);
+    }
 
 }
