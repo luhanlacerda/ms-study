@@ -16,7 +16,7 @@ public class PaymentService {
 
         try {
             Worker worker = workerFeignClient.findById(workId).getBody();
-            Payment payment = worker != null ? new Payment(worker.getName(), worker.getDailyIncome(), days) : null;
+            Payment payment = getWorker(days, worker);
 
             return payment;
         } catch (Exception e) {
@@ -24,5 +24,9 @@ public class PaymentService {
             return null;
         }
     }
+
+	private Payment getWorker(int days, Worker worker) {
+		return worker != null ? new Payment(worker.getName(), worker.getDailyIncome(), days) : null;
+	}
 
 }
